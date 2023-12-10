@@ -1,0 +1,61 @@
+class Bakery:
+    def __init__(self):
+        self.noon_price = {
+            'بربری': 2000,
+            'لواش': 1500,
+            'باگت': 2500,
+            'تافتون': 1800,
+            'سنگگ': 2200
+        }
+        self.order_history = []
+
+    def calculate_cost(self, order):
+        total_cost = 0
+
+        for noon, quantity in order.items():
+            if quantity > 0:
+                total_cost += self.noon_price[noon] * quantity
+                print(f"{quantity} تا {noon} انتخاب شد.")
+
+        return total_cost
+
+    def run(self):
+        total_order_cost = 0
+
+        while True:
+            order = {}
+            for noon in self.noon_price:
+                order[noon] = 0
+
+            print("لطفاً نوع نان و تعداد مورد نظر خود را وارد کنید:")
+            for noon in order:
+                quantity = int(input(f"تعداد {noon}: "))
+                order[noon] = quantity
+
+            current_order_cost = self.calculate_cost(order)
+            total_order_cost += current_order_cost
+            self.order_history.append({'order': order, 'total_cost': total_order_cost})
+
+            print(f"\nهزینه کل: {total_order_cost} تومان")
+
+            more_order = input("آیا می خواهید سفارش دیگری بدهید؟ (بله/خیر): ")
+            if more_order.lower() != 'بله':
+                break
+
+    def show_order_history(self):
+        print("\nتاریخچه سفارشات:")
+        for i, order_info in enumerate(self.order_history, 1):
+            print(f"\nسفارش {i}:")
+            order = order_info['order']
+            total_cost = order_info['total_cost']
+            for noon, quantity in order.items():
+                if quantity > 0:
+                    print(f"{quantity} تا {noon}")
+
+            print(f"هزینه کل: {total_cost} تومان")
+
+
+if __name__ == "__main__":
+    bakery = Bakery()
+    bakery.run()
+    bakery.show_order_history()
